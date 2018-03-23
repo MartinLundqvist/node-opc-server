@@ -67,7 +67,7 @@ var auth = {
   "client_id": "5aa3d9b18c04c4e6b18babf6",
   "client_secret": "kqDz15LYia78X9bymV12U7ogDsYDPKGkK4y6WnnikQ",
   "username": "iphonelynden@gmail.com",
-  "password": "control*88",
+  "password": "",
 };
 
 try  {

@@ -1,0 +1,16 @@
+{
+  "name": "opc-server",
+  "version": "1.0.0",
+  "description": "Simple Node.js OPC Server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Martin Lundqvist",
+  "license": "ISC",
+  "dependencies": {
+    "netatmo": "^2.1.0",
+    "node-opcua": "^0.2.2",
+    "node-opcua-samples": "^0.2.2"
+  }
+}

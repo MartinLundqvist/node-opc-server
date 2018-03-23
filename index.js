@@ -35,6 +35,13 @@ const argv = yargs
       describe: 'Save server.json output log',
       boolean: true,
       default: false
+    },
+    password: {
+        demand: true,
+        alias: 'p',
+        describe: 'Netatmo password',
+        string: true,
+        default: ""
     }
   })
   .help()
@@ -67,7 +74,7 @@ var auth = {
   "client_id": "5aa3d9b18c04c4e6b18babf6",
   "client_secret": "kqDz15LYia78X9bymV12U7ogDsYDPKGkK4y6WnnikQ",
   "username": "iphonelynden@gmail.com",
-  "password": "",
+  "password": argv.p
 };
 
 try  {
@@ -97,10 +104,7 @@ api.on("warning", (err) => {
     console.log('Netatmo threw a warning: ' + err);
 });
 
-// fetch new data from weather station every 10 mins (600000ms)
-setInterval( () => {
-  //debugger;
-
+var readStationsData = () => {
   api.getStationsData( (err, devices) => {
     if (err) {
         console.log(err);
@@ -115,8 +119,32 @@ setInterval( () => {
       console.log('Fetched new station data.:');
       console.log(outdoorTemperature, indoorTemperature, rain);
     }
-
   });
+}
+
+// fetch new data from weather station every 10 mins (600000ms)
+setInterval( () => {
+  //debugger;
+  readStationsData();
+
+
+  //
+  // api.getStationsData( (err, devices) => {
+  //   if (err) {
+  //       console.log(err);
+  //   }
+  //
+  //   var modules = devices[0].modules;
+  //   //console.log(JSON.stringify(modules, undefined, 2));
+  //   outdoorTemperature = modules[0].dashboard_data.Temperature;
+  //   indoorTemperature = modules[1].dashboard_data.Temperature;
+  //   rain = modules[2].dashboard_data.Rain;
+  //   if (verbose) {
+  //     console.log('Fetched new station data.:');
+  //     console.log(outdoorTemperature, indoorTemperature, rain);
+  //   }
+  //
+  // });
 }, 600000);
 
 // update the fake variable with whatever every second
@@ -271,5 +299,8 @@ server.start( (err) => {
   console.log("Server is now listening ... ( press CTRL+C to stop)");
   console.log(`... on : ${server.endpoints[0].endpointDescriptions()[0].endpointUrl}`);
   console.log("port ", server.endpoints[0].port);
+
+  readStationsData();
+
 
 });
